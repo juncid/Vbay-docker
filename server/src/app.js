@@ -11,12 +11,15 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // DB Setup
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var DATABASE_URL = process.env.DATABASE_URL || 'http://localhost'
-mongoose.connect(`mongodb://${DATABASE_URL}/posts`, { useNewUrlParser: true });
+const DATABASE_URL = process.env.DATABASE_URL || 'http://localhost'
+mongoose.connect(`mongodb://${DATABASE_URL}/printBay`, {
+  useNewUrlParser: true,
+  useCreateIndex:true
+});
 
-var db = mongoose.connection;
+const db = mongoose.connection;
 
 db.on('error', function (error) {
   // If first connect fails because server-database isn't up yet, try again.
@@ -24,7 +27,7 @@ db.on('error', function (error) {
   // See: https://github.com/Automattic/mongoose/issues/5169
   if (error.message && error.message.match(/failed to connect to server .* on first connect/)) {
     setTimeout(function () {
-      mongoose.connect(`mongodb://${DATABASE_URL}/posts`, { useNewUrlParser: true }).catch(() => {
+      mongoose.connect(`mongodb://${DATABASE_URL}/printBay`, { useNewUrlParser: true }).catch(() => {
         // empty catch avoids unhandled rejections
       });
     }, 20 * 1000);
@@ -38,7 +41,10 @@ db.once("open", function(callback){
   console.log("Connection Succeeded");
 });
 
+
 // SERVER Setup
+
+
 
 app.use("/items", require("../routes/items"));
 

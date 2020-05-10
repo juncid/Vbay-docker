@@ -4,3 +4,10 @@ exports.list = (req, res) => {
         message: 'Its works!'
     })
 };
+
+exports.create = (req, res) =>{
+    res.send({
+        success: true,
+        message: 'Received Post!'
+    })
+};
